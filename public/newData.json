@@ -1,0 +1,88 @@
+{
+    "code": "200",
+    "msg": "success",
+    "data": {
+        "workFlowDef": {
+            "name": "合同审批",
+            "publicFlag": 1,
+            "sortNo": 5,
+            "duplicateRemovelFlag": 1,
+            "optionTip": "",
+            "optionNotNull": 0,
+            "status": 1
+        },
+        "directorMaxLevel": 4,
+        "flowPermission": [],
+        "formData": [{
+                "type": "input",
+                "label": "标题"
+            },
+            {
+                "type": "input",
+                "label": "标题2"
+            },
+            {
+                "type": "input",
+                "label": "标题3"
+            },
+            {
+                "type": "input",
+                "label": "标题4"
+            },
+            {
+                "type": "input",
+                "label": "标题5"
+            }
+
+
+        ],
+        "nodeConfig": {
+            "pkId": "sid-start-node",
+            "nodeName": "发起人",
+            "nodeFormData": [],
+            "type": 0,
+            "priorityLevel": "",
+            "settype": "",
+            "selectMode": "",
+            "selectRange": "",
+            "examineRoleId": "",
+            "directorLevel": "",
+            "replaceByUp": "",
+            "examineMode": "",
+            "noHanderAction": "",
+            "examineEndType": "",
+            "examineEndRoleId": "",
+            "examineEndDirectorLevel": "",
+            "ccSelfSelectFlag": "",
+            "conditionList": [],
+            "nodeUserList": [],
+            "childNode": {
+                "nodeName": "审核人",
+                "nodeFormData": [],
+                "error": false,
+                "type": 1,
+                "settype": 2,
+                "selectMode": 0,
+                "selectRange": 3,
+                "directorLevel": 1,
+                "replaceByUp": 0,
+                "examineMode": 1,
+                "noHanderAction": 2,
+                "examineEndDirectorLevel": 1,
+                "childNode": {
+                    "nodeName": "抄送人",
+                    "type": 2,
+                    "ccSelfSelectFlag": 1,
+                    "childNode": null,
+                    "nodeUserList": [],
+                    "error": false
+                },
+                "nodeUserList": [{
+                    "name": 1
+                }]
+            },
+            "conditionNodes": []
+        }
+
+    }
+}

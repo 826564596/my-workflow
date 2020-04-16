@@ -1,0 +1,17 @@
+{
+    "code": "200",
+    "msg": "操作成功",
+    "data": [{
+        "columnId": 1,
+        "showName": "金额"
+    }, {
+        "columnId": 2,
+        "showName": "数字框"
+    }, {
+        "columnId": 3,
+        "showName": "单选框"
+    }, {
+        "columnId": 4,
+        "showName": "部门"
+    }]
+}
