@@ -34,7 +34,7 @@
                     <div :class="'zoom-in'+ (nowVal==300?' disabled':'')" @click="zoomSize(2)"></div>
                 </div>
                 <div class="box-scale" id="box-scale" :style="'transform: scale('+nowVal/100+'); transform-origin: 50% 0px 0px;'">
-                    <nodeWrap :nodeConfig.sync="nodeConfig" :formData="formData" :flowPermission.sync="flowPermission" :isTried.sync="isTried" :directorMaxLevel="directorMaxLevel" :tableId="tableId"></nodeWrap>
+                    <nodeWrap :nodeConfig.sync="nodeConfig" :formData.sync="formData" :flowPermission.sync="flowPermission" :isTried.sync="isTried" :directorMaxLevel="directorMaxLevel" :tableId="tableId"></nodeWrap>
                     <div class="end-node">
                         <div class="end-node-circle"></div>
                         <div class="end-node-text">流程结束</div>
@@ -71,8 +71,8 @@ export default {
     components: {},
     data() {
         return {
-            isTried: false,
-            tipList: [],
+            isTried: false,//每个节点是否通过校验
+            tipList: [],//遍历nodeConfig之后的不符合提示
             tipVisible: false, //流程校验提示
             nowVal: 100, //初始大小
             processConfig: {},
@@ -87,8 +87,8 @@ export default {
     },
     created() {
         this.$axios
-            // .get("/data.json", {
-            .get("/newData.json", {
+            .get("/data.json", {
+                // .get("/newData.json", {
                 workFlowDefId: this.$route.params.workFlowDefId
             })
             .then(res => {
@@ -106,11 +106,9 @@ export default {
         toReturn() {
             //window.location.href = ""
         },
-
+        //递归遍历nodeConfig
         reErr(data) {
             console.log("reErr");
-            console.log(data);
-
             if (data.childNode) {
                 if (data.childNode.type == 1) {
                     //审批人
@@ -151,7 +149,7 @@ export default {
                 data.childNode = null;
             }
         },
-        //保存设置
+        //保存流程设置
         saveSet() {
             this.isTried = true;
             this.tipList = [];
@@ -161,8 +159,9 @@ export default {
                 return;
             }
             this.processConfig.flowPermission = this.flowPermission;
-            //   console.log(JSON.stringify(this.processConfig));
+            console.log(JSON.stringify(this.processConfig));
             // this.$axios.post("", this.processConfig).then(res => {
+            //     console.log(res);
             //     if (res.code == 200) {
             //         this.$message.success("设置成功");
             //         setTimeout(function () {

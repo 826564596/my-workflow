@@ -101,7 +101,7 @@ export default {
                         }
                     ]
                 };
-                this.$emit("update:childNodeP", data);
+                this.$emit("update:childNodeP", data);//向父组件更新参数
             }
         }
     }

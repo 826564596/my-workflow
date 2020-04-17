@@ -3,15 +3,63 @@
     "msg": "操作成功",
     "data": [{
         "columnId": 1,
-        "showName": "金额"
+        "type": 2,
+        "conditionEn": "",
+        "conditionCn": "",
+        "optType": 1,
+        "zdy1": "",
+        "zdy2": "",
+        "opt1": "",
+        "opt2": "",
+        "columnDbname": "",
+        "columnType": "Double",
+        "showType": "",
+        "showName": "金额",
+        "fixedDownBoxValue": ""
     }, {
         "columnId": 2,
-        "showName": "数字框"
+        "type": 2,
+        "conditionEn": "",
+        "conditionCn": "",
+        "optType": 1,
+        "zdy1": "",
+        "zdy2": "",
+        "opt1": "",
+        "opt2": "",
+        "columnDbname": "",
+        "columnType": "Double",
+        "showType": "",
+        "showName": "数字",
+        "fixedDownBoxValue": ""
     }, {
         "columnId": 3,
-        "showName": "单选框"
+        "type": 2,
+        "conditionEn": "",
+        "conditionCn": "",
+        "optType": 1,
+        "zdy1": "",
+        "zdy2": "",
+        "opt1": "",
+        "opt2": "",
+        "columnDbname": "",
+        "columnType": "Double",
+        "showType": "",
+        "showName": "单选框",
+        "fixedDownBoxValue": ""
     }, {
         "columnId": 4,
-        "showName": "部门"
+        "type": 2,
+        "conditionEn": "",
+        "conditionCn": "",
+        "optType": 1,
+        "zdy1": "",
+        "zdy2": "",
+        "opt1": "",
+        "opt2": "",
+        "columnDbname": "",
+        "columnType": "Double",
+        "showType": "",
+        "showName": "部门",
+        "fixedDownBoxValue": ""
     }]
 }

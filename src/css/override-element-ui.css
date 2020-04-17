@@ -113,17 +113,18 @@
 }
 
 .demo-el-tab_content {
-    height: 600px;
+    height: 800px;
 }
 
 .demo-el-tabs_position {
     padding-left: 20px;
 }
 
+
 .demo-el-scroller-view {
-    height: 500px;
+    height: auto;
 }
 
 .demo-el-scroller-wrap {
-    height: 850px;
+    height: 769px;
 }

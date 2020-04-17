@@ -33,8 +33,6 @@
                 "type": "input",
                 "label": "标题5"
             }
-
-
         ],
         "nodeConfig": {
             "pkId": "sid-start-node",
