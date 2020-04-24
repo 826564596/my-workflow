@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- 如果不是条件节点 -->
+        <!-- 如果不是路由节点 -->
         <div class="node-wrap" v-if="nodeConfig.type != 4">
             <div class="node-wrap-box" :class="(nodeConfig.type == 0 ? 'start-node ' : '') + (isTried && nodeConfig.error ? 'active error' : '')">
                 <div>
@@ -13,11 +13,14 @@
                         <i class="anticon anticon-close close" v-if="nodeConfig.type != 0" @click="delNode()"></i>
                     </div>
                     <div class="content" @click="setPerson">
+                        <!-- 如果是发起节点 -->
                         <div class="text" v-if="nodeConfig.type == 0">{{ arrToStr(flowPermission) ? arrToStr(flowPermission) : "所有人" }}</div>
+                        <!-- 如果是审批节点 -->
                         <div class="text" v-if="nodeConfig.type == 1">
                             <span class="placeholder" v-if="!setApproverStr(nodeConfig)">请选择{{ placeholderList[nodeConfig.type] }}</span>
                             {{ setApproverStr(nodeConfig) }}
                         </div>
+                        <!-- 如果是抄送节点 -->
                         <div class="text" v-if="nodeConfig.type == 2">
                             <span class="placeholder" v-if="!copyerStr(nodeConfig)">请选择{{ placeholderList[nodeConfig.type] }}</span>
                             {{ copyerStr(nodeConfig) }}
@@ -31,7 +34,7 @@
             </div>
             <addNode :childNodeP.sync="nodeConfig.childNode"></addNode>
         </div>
-        <!-- 如果是条件节点 -->
+        <!-- 如果是路由节点 -->
         <div class="branch-wrap" v-if="nodeConfig.type == 4">
             <div class="branch-box-wrap">
                 <div class="branch-box">
@@ -40,15 +43,17 @@
                         <div class="condition-node">
                             <div class="condition-node-box">
                                 <div class="auto-judge" :class="isTried && item.error ? 'error active' : ''">
-                                    <div class="sort-left" v-if="index != 0" @click="arrTransfer(index, -1)">&lt;</div>
+                                    <div class="sort-left" v-if="index != 0" @click="arrTransfer(index, -1)"> <img src="@/assets/images/left.png" />
+                                    </div>
                                     <div class="title-wrapper">
                                         <input type="text" class="ant-input editable-title-input" v-if="isInputList[index]" @blur="blurEvent(index)" @focus="$event.currentTarget.select()" v-focus v-model="item.nodeName" />
                                         <span class="editable-title" @click="clickEvent(index)" v-if="!isInputList[index]">{{ item.nodeName }}</span>
                                         <span class="priority-title" @click="setPerson(item.priorityLevel)">优先级{{ item.priorityLevel }}</span>
                                         <i class="anticon anticon-close close" @click="delTerm(index)"></i>
+
                                     </div>
                                     <div class="sort-right" v-if="index != nodeConfig.conditionNodes.length - 1" @click="arrTransfer(index)">
-                                        &gt;
+                                        <img src="@/assets/images/right.png" />
                                     </div>
                                     <div class="content" @click="setPerson(item.priorityLevel)">{{ conditionStr(item, index) }}</div>
                                     <div class="error_tip" v-if="isTried && item.error">
@@ -534,6 +539,7 @@
                     <ul>
                         <li v-for="(item, index) in conditionConfig.conditionList" :key="index">
                             <span class="ellipsis">{{ item.type == 1 ? "发起人" : item.showName }}：</span>
+                            <!-- 发起人条件类型 -->
                             <div v-if="item.type == 1">
                                 <p :class="conditionConfig.nodeUserList.length > 0 ? 'selected_list' : ''" @click.self="addConditionRole" style="cursor:text">
                                     <span v-for="(item1, index1) in conditionConfig.nodeUserList" :key="index1">
@@ -543,15 +549,18 @@
                                     <input type="text" placeholder="请选择具体人员/角色/部门" v-if="conditionConfig.nodeUserList.length == 0" @click="addConditionRole" />
                                 </p>
                             </div>
+                            <!-- 单选框 -->
                             <div v-else-if="item.columnType == 'String' && item.showType == 3">
                                 <p class="check_box">
-                                    <a :class="toggleStrClass(item, item1.key) && 'active'" @click="toStrChecked(item, item1.key)" v-for="(item1, index1) in JSON.parse(item.fixedDownBoxValue)" :key="index1">{{ item1.value }}</a>
+                                    <a :class="toggleStrClass(item, item1.key) && 'active'" @click="toStrChecked(item, item1.key)" v-for="(item1, index1) in item.fixedDownBoxValue" :key="index1">{{ item1.value }}</a>
+
+                                    <!-- <a :class="toggleStrClass(item, item1.key) && 'active'" @click="toStrChecked(item, item1.key)" v-for="(item1, index1) in JSON.parse(item.fixedDownBoxValue)" :key="index1">{{ item1.value }}</a> -->
                                 </p>
                             </div>
-                            <!-- double -->
+                            <!-- 涉及数字 -->
                             <div v-else>
                                 <p>
-                                    <select class="my-select" v-model="item.optType" :style="'width:' + (item.optType == 6 ? 370 : 100) + 'px'" @change="changeOptType(item)">
+                                    <select id="my-select" v-model="item.optType" :style="'width:' + (item.optType == 6 ? 370 : 100) + 'px'" @change="changeOptType(item)">
                                         <option value="1">小于</option>
                                         <option value="2">大于</option>
                                         <option value="3">小于等于</option>
@@ -563,12 +572,12 @@
                                 </p>
                                 <p v-if="item.optType == 6">
                                     <input type="text" style="width:75px;" class="mr_10" v-enter-number="2" v-model="item.zdy1" />
-                                    <select style="width:60px;" v-model="item.opt1">
+                                    <select id="my-select" style="width:60px;" v-model="item.opt1">
                                         <option value="<">&lt;</option>
                                         <option value="≤">≤</option>
                                     </select>
                                     <span class="ellipsis" style="display:inline-block;width:60px;vertical-align: text-bottom;">{{ item.showName }}</span>
-                                    <select style="width:60px;" class="ml_10" v-model="item.opt2">
+                                    <select id="my-select" style="width:60px;" class="ml_10" v-model="item.opt2">
                                         <option value="<">&lt;</option>
                                         <option value="≤">≤</option>
                                     </select>
@@ -580,6 +589,7 @@
                         </li>
                     </ul>
                     <el-button type="primary" @click="addCondition">添加条件</el-button>
+                    <!-- 条件抽屉的添加条件对话框 -->
                     <el-dialog title="选择条件" :visible.sync="conditionVisible" width="480px" append-to-body class="condition_list">
                         <p>请选择用来区分审批流程的条件字段</p>
                         <p class="check_box">
@@ -594,6 +604,8 @@
                         </span>
                     </el-dialog>
                 </div>
+
+                <!-- 条件抽屉的选人对话框 -->
                 <el-dialog title="选择成员" :visible.sync="conditionRoleVisible" width="600px" append-to-body class="promoter_person">
                     <div class="person_body clear">
                         <div class="person_tree l">
@@ -670,7 +682,7 @@
             </div>
         </el-drawer>
 
-        <!-- 组件的-->
+        <!-- 组件的递归-->
         <nodeWrap v-if="nodeConfig.childNode && nodeConfig.childNode" :nodeConfig.sync="nodeConfig.childNode" :formData.sync="formData" :tableId="tableId" :isTried.sync="isTried" :directorMaxLevel="directorMaxLevel">
         </nodeWrap>
     </div>
@@ -682,7 +694,7 @@ export default {
         "flowPermission",//可以发起条流程的人--流程许可
         "directorMaxLevel", //等级
         "isTried",//是否通过校验
-        "tableId", //表格ID暂定
+        "tableId", //表单ID
         "formData" //表单数据
     ],
     data() {
@@ -712,12 +724,12 @@ export default {
             copyerVisible: false,//添加修改抄送人-选择部门显示隐藏参数
             copyerConfig: {},
             copyerSearchName: "",
-            activeName: "1",
+            activeName: "1",//组织架构和角色列表切换
             copyerEmployessList: [],
             copyerRoleList: [],//抄送人角色列表
             ccSelfSelectFlag: [],
             conditionDrawer: false, //条件节点抽屉相关配置隐藏-显示参数
-            conditionVisible: false,
+            conditionVisible: false,//添加修改条件显示隐藏参数
             conditionConfig: {},//条件相关配置
             conditionsConfig: {
                 conditionNodes: []
@@ -725,17 +737,19 @@ export default {
             bPriorityLevel: "",
             conditions: [],
             conditionList: [],//作为条件列表
-            conditionRoleVisible: false,
+            conditionRoleVisible: false,//添加修改条件-选择部门显示隐藏参数
             conditionRoleSearchName: "",
             conditionDepartmentList: [],
             conditionEmployessList: [],
             conditionRoleList: []
         };
     },
+    //组件创建完成
     created() { },
     updated() { },
+
+    // 挂载后，根据不同的节点类型
     mounted() {
-        console.log("mounted");
         if (this.nodeConfig.type == 1) {
             this.nodeConfig.error = !this.setApproverStr(this.nodeConfig);
         } else if (this.nodeConfig.type == 2) {
@@ -800,7 +814,7 @@ export default {
                     : this.placeholderList[this.nodeConfig.type];
             }
         },
-        //生成条件字段
+        //根据conditionList生成条件字符串
         conditionStr(item, index) {
             console.log("conditionStr");
             var { conditionList, nodeUserList } = item;
@@ -822,6 +836,7 @@ export default {
                         opt2,
                         fixedDownBoxValue
                     } = conditionList[i];
+                    //如果是判断条件是：发起人
                     if (columnId == 0) {
                         if (nodeUserList.length != 0) {
                             str += "发起人属于：";
@@ -833,23 +848,20 @@ export default {
                                     .join("或") + " 并且 ";
                         }
                     }
+                    //
                     if (columnType == "String" && showType == "3") {
                         if (zdy1) {
                             str +=
                                 showName +
                                 "属于：" +
-                                this.dealStr(
-                                    zdy1,
-                                    JSON.parse(fixedDownBoxValue)
-                                ) +
-                                " 并且 ";
+                                // this.dealStr(zdy1, JSON.parse(fixedDownBoxValue)) +
+                                this.dealStr(zdy1, fixedDownBoxValue) + " 并且 ";
                         }
                     }
+                    //如果涉及运算符
                     if (columnType == "Double") {
                         if (optType != 6 && zdy1) {
-                            var optTypeStr = ["", "<", ">", "≤", "=", "≥"][
-                                optType
-                            ];
+                            let optTypeStr = ["", "<", ">", "≤", "=", "≥"][optType];
                             str += `${showName} ${optTypeStr} ${zdy1} 并且 `;
                         } else if (optType == 6 && zdy1 && zdy2) {
                             str += `${zdy1} ${opt1} ${showName} ${opt2} ${zdy2} 并且 `;
@@ -859,6 +871,7 @@ export default {
                 return str ? str.substring(0, str.length - 4) : "请设置条件";
             }
         },
+        //判断obj里是否含有str.split里的元素，如果有返回相同元素
         dealStr(str, obj) {
             console.log("dealStr");
             let arr = [];
@@ -875,7 +888,6 @@ export default {
         //添加条件（详细）
         addConditionRole() {
             console.log("addConditionRole");
-
             this.conditionRoleSearchName = "";
             this.conditionRoleVisible = true;
             this.activeName = "1";
@@ -884,22 +896,24 @@ export default {
             this.conditionEmployessList = [];
             this.conditionRoleList = [];
             for (var i = 0; i < this.conditionConfig.nodeUserList.length; i++) {
-                var {
-                    type,
-                    name,
-                    targetId
-                } = this.conditionConfig.nodeUserList[i];
+                var { type, name, targetId } = this.conditionConfig.nodeUserList[i];
+                //如果选人
                 if (type == 1) {
                     this.conditionEmployessList.push({
                         employeeName: name,
                         id: targetId
                     });
-                } else if (type == 2) {
+
+                }
+                //如果选部门 
+                else if (type == 2) {
                     this.conditionRoleList.push({
                         roleName: name,
                         roleId: targetId
                     });
-                } else if (type == 3) {
+                }
+                // 如果选角色
+                else if (type == 3) {
                     this.conditionDepartmentList.push({
                         departmentName: name,
                         id: targetId
@@ -911,6 +925,7 @@ export default {
         sureConditionRole() {
             console.log("sureConditionRole");
             this.conditionConfig.nodeUserList = [];
+            //选角色，type=2
             this.conditionRoleList.map(item => {
                 this.conditionConfig.nodeUserList.push({
                     type: 2,
@@ -918,6 +933,7 @@ export default {
                     name: item.roleName
                 });
             });
+            //选部门，type=3
             this.conditionDepartmentList.map(item => {
                 this.conditionConfig.nodeUserList.push({
                     type: 3,
@@ -925,6 +941,7 @@ export default {
                     name: item.departmentName
                 });
             });
+            //选人，type=1
             this.conditionEmployessList.map(item => {
                 this.conditionConfig.nodeUserList.push({
                     type: 1,
@@ -937,7 +954,6 @@ export default {
         //添加条件事件
         addCondition() {
             console.log("addCondition");
-
             this.conditionList = [];
             this.conditionVisible = true;
             this.$axios
@@ -966,13 +982,43 @@ export default {
                     }
                 });
         },
+        //改变条件类型
         changeOptType(item) {
             console.log("changeOptType");
-            if (item.optType == 1) {
-                item.zdy1 = 2;
-            } else {
-                item.zdy1 = 1;
-                item.zdy2 = 2;
+            // if (item.optType == 1) {
+            //     item.zdy1 = 2;
+            // } else {
+            //     item.zdy1 = 1;
+            //     item.zdy2 = 2;
+            // }
+
+            // if (item.optType == 6) {
+            //     item.zdy1 = 1;
+            //     item.zdy2 = 2;
+            // }
+            // else {
+            //     item.zdy1 = 2;
+            // }
+
+            switch (item.optType) {
+                //小于
+                case "1": item.zdy1 = 2; item.opt1 = "<";
+                    break;
+                //大于
+                case "2": item.zdy1 = 2; item.opt1 = "<";
+                    break;
+                //小于等于
+                case "3": item.zdy1 = 2; item.opt1 = "≤";
+                    break;
+                //等于
+                case "4": item.zdy1 = 2; item.opt1 = "=";
+                    break;
+                //大于等于
+                case "5": item.zdy1 = 2; item.opt1 = "≤";
+                    break;
+                //介于两数之间
+                case "6": item.zdy1 = 1; item.zdy2 = 2;
+                    break;
             }
         },
         //确认添加条件this.conditionList是check选择的，this.conditionConfig.conditionList是该节点真正的判断条件
@@ -1051,19 +1097,11 @@ export default {
                 this.bPriorityLevel - 1,
                 1
             ); //截取旧下标
-            this.conditionsConfig.conditionNodes.splice(
-                this.conditionConfig.priorityLevel - 1,
-                0,
-                a[0]
-            ); //填充新下标
+            this.conditionsConfig.conditionNodes.splice(this.conditionConfig.priorityLevel - 1, 0, a[0]); //填充新下标
             this.conditionsConfig.conditionNodes.map((item, index) => {
                 item.priorityLevel = index + 1;
             });
-            for (
-                var i = 0;
-                i < this.conditionsConfig.conditionNodes.length;
-                i++
-            ) {
+            for (let i = 0; i < this.conditionsConfig.conditionNodes.length; i++) {
                 this.conditionsConfig.conditionNodes[i].error =
                     this.conditionStr(
                         this.conditionsConfig.conditionNodes[i], i) == "请设置条件" &&
@@ -1071,6 +1109,7 @@ export default {
             }
             this.$emit("update:nodeConfig", this.conditionsConfig);
         },
+        //获取部门or角色数据
         getDebounceData(event, type = 1) {
             console.log("getDebounceData");
             this.$func.debounce(
@@ -1078,26 +1117,16 @@ export default {
                     if (event.target.value) {
                         if (type == 1) {
                             this.departments.childDepartments = [];
-                            this.$axios
-                                .get(
-                                    `/employees.json?searchName=${event.target.value}&pageNum=1&pageSize=30`
-                                )
-                                .then(res => {
-                                    this.departments.employees = res.data.list;
-                                });
+                            this.$axios.get(`/employees.json?searchName=${event.target.value}&pageNum=1&pageSize=30`).then(res => {
+                                this.departments.employees = res.data.list;
+                            });
                         } else {
-                            this.$axios
-                                .get(
-                                    `/roles.json?searchName=${event.target.value}&pageNum=1&pageSize=30`
-                                )
-                                .then(res => {
-                                    this.roles = res.data.list;
-                                });
+                            this.$axios.get(`/roles.json?searchName=${event.target.value}&pageNum=1&pageSize=30`).then(res => {
+                                this.roles = res.data.list;
+                            });
                         }
                     } else {
-                        type == 1
-                            ? this.getDepartmentList()
-                            : this.getRoleList();
+                        type == 1 ? this.getDepartmentList() : this.getRoleList();
                     }
                 }.bind(this)
             )();
@@ -1266,47 +1295,58 @@ export default {
         setApproverStr(nodeConfig) {
             console.log("setApproverStr");
             console.log(nodeConfig.settype);
+            //settype=1：指定成员
             if (nodeConfig.settype == 1) {
+                // 单人审批
                 if (nodeConfig.nodeUserList.length == 1) {
                     return nodeConfig.nodeUserList[0].name;
+                    // 多人审批
                 } else if (nodeConfig.nodeUserList.length > 1) {
+                    //依次审批
                     if (nodeConfig.examineMode == 1) {
                         return this.arrToStr(nodeConfig.nodeUserList);
-                    } else if (nodeConfig.examineMode == 2) {
+                    }
+                    //会签 
+                    else if (nodeConfig.examineMode == 2) {
                         return nodeConfig.nodeUserList.length + "人会签";
                     }
                 }
-            } else if (nodeConfig.settype == 2) {
-                let level =
-                    nodeConfig.directorLevel == 1
-                        ? "直接主管"
-                        : "第" + nodeConfig.directorLevel + "级主管";
+            }
+            //settype=2：主管 
+            else if (nodeConfig.settype == 2) {
+                let level = nodeConfig.directorLevel == 1 ? "直接主管" : "第" + nodeConfig.directorLevel + "级主管";
                 if (nodeConfig.examineMode == 1) {
                     return level;
                 } else if (nodeConfig.examineMode == 2) {
                     return level + "会签";
                 }
-            } else if (nodeConfig.settype == 4) {
+            }
+            //settype=4：发起人自选
+            else if (nodeConfig.settype == 4) {
+                //selectRange=1,发起人自选选选择一人
                 if (nodeConfig.selectRange == 1) {
                     return "发起人自选";
                 } else {
                     if (nodeConfig.nodeUserList.length > 0) {
+                        //selectRange=2,发起人自选选选择多人
                         if (nodeConfig.selectRange == 2) {
                             return "发起人自选";
                         } else {
                             return (
-                                "发起人从" +
-                                nodeConfig.nodeUserList[0].name +
-                                "中自选"
+                                "发起人从" + nodeConfig.nodeUserList[0].name + "中自选"
                             );
                         }
                     } else {
                         return "";
                     }
                 }
-            } else if (nodeConfig.settype == 5) {
+            }
+            // settype=5：发起人自己
+            else if (nodeConfig.settype == 5) {
                 return "发起人自己";
-            } else if (nodeConfig.settype == 7) {
+            }
+            //settype=7：连续多级主管
+            else if (nodeConfig.settype == 7) {
                 return (
                     "从直接主管到通讯录中级别最高的第" +
                     nodeConfig.examineEndDirectorLevel +
@@ -1384,6 +1424,7 @@ export default {
                     .toString();
             }
         },
+        //判断item.zdy1里是否含有key
         toggleStrClass(item, key) {
             console.log("toggleStrClass");
             let a = item.zdy1 ? item.zdy1.split(",") : [];
@@ -1391,6 +1432,7 @@ export default {
                 return item == key;
             });
         },
+        //条件check函数
         toStrChecked(item, key) {
             console.log("toStrChecked");
             let a = item.zdy1 ? item.zdy1.split(",") : [];
@@ -1450,6 +1492,7 @@ export default {
         //获取部门列表
         getDepartmentList(parentId = 0) {
             console.log("getDepartmentList");
+            console.log(parentId);
             this.$axios
                 .get("/departments.json?parentId=" + parentId)
                 .then(res => {
@@ -1494,6 +1537,7 @@ export default {
                     i != this.nodeConfig.conditionNodes.length - 1;
             }
             this.$emit("update:nodeConfig", this.nodeConfig);
+            //如果只有一个条件
             if (this.nodeConfig.conditionNodes.length == 1) {
                 if (this.nodeConfig.childNode) {
                     if (this.nodeConfig.conditionNodes[0].childNode) {
@@ -1511,6 +1555,7 @@ export default {
                 );
             }
         },
+        //递归添加子节点,如果data没有childNode,把addData做为data的子节点
         reData(data, addData) {
             console.log("reData");
 
@@ -1571,6 +1616,7 @@ export default {
                 this.conditionConfig = this.conditionsConfig.conditionNodes[priorityLevel - 1];
             }
         },
+        //条件左右移函数
         arrTransfer(index, type = 1) {
             console.log("arrTransfer");
 
@@ -1826,7 +1872,8 @@ el-radio-group {
     font-weight: bold;
     line-height: 19px;
 }
-.condition_copyer .el-drawer__body .condition_content .select {
+#my-select {
+    position: static;
     top: 11px;
     right: 30px;
     width: 100px;

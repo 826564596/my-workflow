@@ -67,6 +67,8 @@
     </div>
 </template>
 <script>
+import FileSaver from "file-saver";
+
 export default {
     components: {},
     data() {
@@ -87,8 +89,8 @@ export default {
     },
     created() {
         this.$axios
-            .get("/data.json", {
-                // .get("/newData.json", {
+            // .get("/data.json", {
+            .get("/newData.json", {
                 workFlowDefId: this.$route.params.workFlowDefId
             })
             .then(res => {
@@ -106,7 +108,7 @@ export default {
         toReturn() {
             //window.location.href = ""
         },
-        //递归遍历nodeConfig
+        //递归遍历nodeConfig,每次设置相关节点时会保存error
         reErr(data) {
             console.log("reErr");
             if (data.childNode) {
@@ -120,6 +122,7 @@ export default {
                     }
                     this.reErr(data.childNode);
                 } else if (data.childNode.type == 2) {
+                    //抄送人
                     if (data.childNode.error) {
                         this.tipList.push({
                             name: data.childNode.nodeName,
@@ -128,8 +131,10 @@ export default {
                     }
                     this.reErr(data.childNode);
                 } else if (data.childNode.type == 3) {
+                    //条件节点
                     this.reErr(data.childNode.childNode);
                 } else if (data.childNode.type == 4) {
+                    //路由节点
                     this.reErr(data.childNode);
                     for (
                         var i = 0;
@@ -159,7 +164,10 @@ export default {
                 return;
             }
             this.processConfig.flowPermission = this.flowPermission;
-            console.log(JSON.stringify(this.processConfig));
+            // console.log(JSON.stringify(this.processConfig));
+            this.ergodicNodeConfig(this.processConfig.nodeConfig);
+            // let blob = new Blob([JSON.stringify(this.processConfig)], { type: "text/plain;charset=utf-8" });
+            // FileSaver.saveAs(blob, "@\\processConfig.json");
             // this.$axios.post("", this.processConfig).then(res => {
             //     console.log(res);
             //     if (res.code == 200) {
@@ -183,9 +191,77 @@ export default {
                 }
                 this.nowVal += 10;
             }
+        },
+        //遍历数据nodeConfig
+        ergodicNodeConfig(nodeConfig, showName = "金额", value = 1, options = [{ label: '选项1', key: 0 }]) {
+            let node = nodeConfig;
+            let nodes = [];
+            while (node) {
+                if (node.type == 4) {
+                    this.ergodicTree(node, showName, value, options);
+                    node = node.childNode;
+                }
+                else {
+                    console.log("nodeName:" + node.nodeName);
+                    nodes.push(node);
+                    node = node.childNode;
+                }
+
+            }
+
+        },
+        //第一个路由节点为一颗多叉树
+        ergodicTree(node, showName, value, options) {
+            console.log("nodeName:" + node.nodeName);
+            //如果有条件子节点并且长度大于0
+            if (node.conditionNodes && node.conditionNodes.length > 0) {
+                for (let i = 0, len = node.conditionNodes.length; i < len; i++) {
+                    //需要根据conditionList和nodeUserList判断条件
+                    if (this.judgeCondition(node.conditionNodes[i], showName, value, options)) {
+                        if (!this.ergodicTree(node.conditionNodes[i], showName, value, options)) {
+                            break;
+                        }
+                    }
+                }
+            }
+            //如果有孩子节点
+            else if (node.childNode) {
+                return this.ergodicTree(node.childNode, showName, value, options);
+            }
+            else {
+                return 0;
+            }
+
+        },
+        //根据conditionList和nodeUserList判断
+        judgeCondition(conditionNodes, showName, value, options) {
+            //根据conditionList里的条件判断输入值是否满足条件
+            return conditionNodes.conditionList.some((item, index) => {
+                //如果是发起人
+                // if (item.columnId == 0) {
+
+                // }
+                //如果是单选框
+                if (item.columnType == "String" && item.showType == "3") {
+                    return item.zdy1.split(",").indexOf(options[0].key + '');
+                }
+                //如果涉及运算符
+                if (item.columnType == "Double") {
+                    let str = "";
+                    if (item.optType != 6 && item.zdy1) {
+                        let optTypeStr = ["", "<", ">", "<=", "==", ">="][item.optType];
+                        str = `${value} ${optTypeStr} ${item.zdy1}`;
+                    }
+                    else if (item.optType == 6 && item.zdy1 && item.zdy2) {
+                        str = `${item.zdy1} ${item.opt1} ${value} && ${value} ${item.opt2} ${item.zdy2}`;
+                    }
+                    return eval(str);
+                }
+            })
         }
-    }
-};
+    },
+}
+
 </script>
 <style>
 @import "../../css/workflow.css";

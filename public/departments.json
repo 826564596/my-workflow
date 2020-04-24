@@ -16,11 +16,19 @@
             "departmentNames": "法务部"
         }],
         "employees": [{
-            "id": "53128111",
-            "employeeName": "亚nan",
-            "isLeave": "0",
-            "open": "false"
-        }],
+                "id": "435119986",
+                "employeeName": "赵婉婷",
+                "isLeave": "0",
+                "open": "false"
+            },
+
+            {
+                "id": "826564596",
+                "employeeName": "胡晓辉",
+                "isLeave": "0",
+                "open": "false"
+            }
+        ],
         "titleDepartments": []
     }
 }

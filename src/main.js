@@ -9,6 +9,7 @@ import "./css/override-element-ui.css";
 import func from "./plugins/preload.js";
 import ydc from "./plugins/common.js";
 import nodeWrap from "@/components/nodeWrap";
+
 Vue.use(nodeWrap);
 Vue.component("nodeWrap", nodeWrap); //初始化组件
 import addNode from "@/components/addNode";
@@ -25,21 +26,21 @@ Vue.directive("enterNumber", {
             el.value = el.value.match(new RegExp(RegStr, "g"));
             el.dispatchEvent(new Event("input"));
         });
-    }
+    },
 });
 
 Vue.directive("focus", {
     // 当被绑定的元素插入到 DOM 中时……
     inserted: function(el) {
         el.focus();
-    }
+    },
 });
 new Vue({
     router,
     store,
     components: {
         nodeWrap,
-        addNode
+        addNode,
     },
-    render: h => h(App)
+    render: (h) => h(App),
 }).$mount("#app");

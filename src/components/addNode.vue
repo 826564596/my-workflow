@@ -39,6 +39,10 @@ export default {
             visible: false
         };
     },
+    created() {
+        console.log("父节点:" + this.childNodeP);
+    },
+
     methods: {
         //添加节点函数
         addType(type) {
@@ -62,7 +66,9 @@ export default {
                         noHanderAction: 1,
                         examineEndDirectorLevel: 0,
                         childNode: this.childNodeP,
-                        nodeUserList: []
+                        nodeUserList: [],
+                        conditionNodes: [],
+
                     };
                 } else if (type == 2) {
                     console.log("抄送人");
@@ -70,6 +76,7 @@ export default {
                         nodeName: "抄送人",
                         type: 2,
                         ccSelfSelectFlag: 1,
+                        conditionNodes: [],
                         childNode: this.childNodeP,
                         nodeUserList: []
                     };
@@ -89,6 +96,7 @@ export default {
                             priorityLevel: 1,
                             conditionList: [],
                             nodeUserList: [],
+                            conditionNodes: [],
                             childNode: this.childNodeP
                         },
                         {
@@ -97,6 +105,7 @@ export default {
                             priorityLevel: 2,
                             conditionList: [],
                             nodeUserList: [],
+                            conditionNodes: [],
                             childNode: null
                         }
                     ]

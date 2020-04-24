@@ -4,8 +4,6 @@
     "data": [{
         "columnId": 1,
         "type": 2,
-        "conditionEn": "",
-        "conditionCn": "",
         "optType": 1,
         "zdy1": "",
         "zdy2": "",
@@ -18,48 +16,27 @@
         "fixedDownBoxValue": ""
     }, {
         "columnId": 2,
-        "type": 2,
-        "conditionEn": "",
-        "conditionCn": "",
-        "optType": 1,
+        "type": 3,
+        "optType": "",
         "zdy1": "",
         "zdy2": "",
         "opt1": "",
         "opt2": "",
         "columnDbname": "",
-        "columnType": "Double",
-        "showType": "",
-        "showName": "数字",
-        "fixedDownBoxValue": ""
-    }, {
-        "columnId": 3,
-        "type": 2,
-        "conditionEn": "",
-        "conditionCn": "",
-        "optType": 1,
-        "zdy1": "",
-        "zdy2": "",
-        "opt1": "",
-        "opt2": "",
-        "columnDbname": "",
-        "columnType": "Double",
-        "showType": "",
+        "columnType": "String",
+        "showType": 3,
         "showName": "单选框",
-        "fixedDownBoxValue": ""
-    }, {
-        "columnId": 4,
-        "type": 2,
-        "conditionEn": "",
-        "conditionCn": "",
-        "optType": 1,
-        "zdy1": "",
-        "zdy2": "",
-        "opt1": "",
-        "opt2": "",
-        "columnDbname": "",
-        "columnType": "Double",
-        "showType": "",
-        "showName": "部门",
-        "fixedDownBoxValue": ""
+        "fixedDownBoxValue": [{
+            "value": "选项1",
+            "key": 0
+        }, {
+            "value": "选项2",
+            "key": 1
+
+        }, {
+            "value": "选项3",
+            "key": 2
+
+        }]
     }]
 }
