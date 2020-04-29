@@ -39,13 +39,14 @@ function endLoading() {
 
 let config = {
     // baseURL: process.env.baseURL || process.env.apiUrl || ""
-    timeout: 10 * 1000, // Timeout
+    timeout: 5000, // Timeout
     // withCredentials: true, // Check cross-site Access-Control
 };
-const _axios = axios.create(config);
+
+const service = axios.create(config);
 
 // 添加请求拦截器
-_axios.interceptors.request.use(
+service.interceptors.request.use(
     (config) => {
         // 在发送请求之前做些什么
         if (config.loading !== false) {
@@ -53,31 +54,31 @@ _axios.interceptors.request.use(
         }
         return config;
     },
-    (err) => {
+    (error) => {
         // 对请求错误做些什么
-        return Promise.reject(err);
+        return Promise.reject(error);
     }
 );
 
 // 添加响应拦截器
-_axios.interceptors.response.use(
-    (res) => {
+service.interceptors.response.use(
+    (response) => {
         // 对响应数据做点什么
         tryHideFullScreenLoading();
-        if (res.data.code && res.data.code != 200) {
-            if (res.data.msg == "登录用户ID不能为空") {
-                func.clearCookie(["token", "uid"]);
-                window.location.href = "/login";
-            }
-            Message.error(res.data.msg);
-            return;
-        }
-        return res.data;
+        // if (res.data.code && res.data.code != 200) {
+        //     if (res.data.msg == "登录用户ID不能为空") {
+        //         func.clearCookie(["token", "uid"]);
+        //         window.location.href = "/login";
+        //     }
+        //     Message.error(res.data.msg);
+        //     return;
+        // }
+        return response.data;
     },
-    (err) => {
+    (error) => {
         // 对响应错误做点什么
         tryHideFullScreenLoading();
-        if (err.message.includes("timeout") || err.response.status == 502) {
+        if (error.message.includes("timeout") || error.response.status == 502) {
             router.push({
                 path: "/500",
                 query: {
@@ -85,26 +86,26 @@ _axios.interceptors.response.use(
                 },
             });
         }
-        if (err.response.data.code && err.response.data.code != 200) {
-            Message.error(err.response.data.msg);
+        if (error.response.data.code && error.response.data.code != 200) {
+            Message.error(error.response.data.msg);
         }
-        return Promise.reject(err);
+        return Promise.reject(error);
     }
 );
 
 Plugin.install = function(Vue, options) {
-    Vue.axios = _axios;
-    window.axios = _axios;
+    Vue.axios = service;
+    window.axios = service;
     //定义全局属性
     Object.defineProperties(Vue.prototype, {
         axios: {
             get() {
-                return _axios;
+                return service;
             },
         },
         $axios: {
             get() {
-                return _axios;
+                return service;
             },
         },
     });

@@ -6,11 +6,16 @@
 
 <script>
 export default {
+
     name: "app"
 };
 </script>
 
 <style>
+@import "./css/workflow.css";
+.error-modal-list {
+    width: 455px;
+}
 #app {
     font-family: "Avenir", Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 <template>
     <div>
         <!-- 头部 -->
@@ -11,11 +10,11 @@
             </div>
             <div class="fd-nav-center">
                 <div class="fd-nav-container">
-                    <div class="ghost-bar" style="transform: translateX(300px);"></div>
-                    <div class="fd-nav-item"><span class="order-num">1</span>基础设置</div>
-                    <div class="fd-nav-item"><span class="order-num">2</span>表单设计</div>
-                    <div class="fd-nav-item active"><span class="order-num">3</span>流程设计</div>
-                    <div class="fd-nav-item"><span class="order-num">4</span>高级设置</div>
+                    <div class="ghost-bar" :style="`transform: translateX(${location}px);`"></div>
+                    <div @click="change(1)" :class="'fd-nav-item' + ' ' + (location == 0 ? 'active' : '')"><span class="order-num">1</span>基础设置</div>
+                    <div @click="change(2)" :class="'fd-nav-item' + ' ' + (location == 150 ? 'active' : '')"><span class="order-num">2</span>表单设计</div>
+                    <div @click="change(3)" :class="'fd-nav-item' + ' ' + (location == 300 ? 'active' : '')"><span class="order-num">3</span>流程设计</div>
+                    <div @click="change(4)" :class="'fd-nav-item' + ' ' + (location == 450 ? 'active' : '')"><span class="order-num">4</span>高级设置</div>
                 </div>
             </div>
             <div class="fd-nav-right">
@@ -25,7 +24,8 @@
                 </button>
             </div>
         </div>
-        <!-- 主体 -->
+
+        <!-- 流程节点主体 -->
         <div class="fd-nav-content">
             <section class="dingflow-design">
                 <div class="zoom">
@@ -42,6 +42,7 @@
                 </div>
             </section>
         </div>
+
         <!-- 提示 -->
         <el-dialog title="提示" :visible.sync="tipVisible">
             <div class="ant-confirm-body">
@@ -67,7 +68,6 @@
     </div>
 </template>
 <script>
-import FileSaver from "file-saver";
 
 export default {
     components: {},
@@ -84,7 +84,8 @@ export default {
             directorMaxLevel: 0, //主管的最高等级
             dialogVisible: true, //判断流程是否可以发布的对话框 隐藏显示参数
             tableId: "", //表单id
-            formData: [] //表单数据
+            formData: [], //表单数据
+            location: 300
         };
     },
     created() {
@@ -105,6 +106,9 @@ export default {
             });
     },
     methods: {
+        change(a) {
+            this.location = (a - 1) * 150;
+        },
         toReturn() {
             //window.location.href = ""
         },
@@ -166,6 +170,12 @@ export default {
             this.processConfig.flowPermission = this.flowPermission;
             // console.log(JSON.stringify(this.processConfig));
             this.ergodicNodeConfig(this.processConfig.nodeConfig);
+
+            this.$axios.post('/api/Forms/Save',
+                { processConfig: this.processConfig }).then(response => {
+                    console.log(response);
+                })
+
             // let blob = new Blob([JSON.stringify(this.processConfig)], { type: "text/plain;charset=utf-8" });
             // FileSaver.saveAs(blob, "@\\processConfig.json");
             // this.$axios.post("", this.processConfig).then(res => {

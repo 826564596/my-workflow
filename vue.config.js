@@ -66,12 +66,12 @@ module.exports = {
         host: "0.0.0.0",
         port: 8081,
         // // 跨域
-        // proxy: {
-        //     '/api/': {
-        //         target: 'http://192.168.0.11/',
-        //         changeOrigin: true
-        //     }
-        // }
+        proxy: {
+            "/api": {
+                target: "http://192.168.1.77:8666/",
+                changeOrigin: true,
+            },
+        },
     },
     // 是否为 Babel 或 TypeScript 使用 thread-loader
     parallel: require("os").cpus().length > 1,
