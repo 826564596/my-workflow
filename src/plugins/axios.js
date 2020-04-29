@@ -29,7 +29,7 @@ function startLoading() {
     loading = Loading.service({
         lock: true,
         background: "rgba(0, 0, 0, 0.2)",
-        spinner: "my-el-custom-spinner"
+        spinner: "my-el-custom-spinner",
     });
 }
 
@@ -39,21 +39,21 @@ function endLoading() {
 
 let config = {
     // baseURL: process.env.baseURL || process.env.apiUrl || ""
-    timeout: 10 * 1000 // Timeout
+    timeout: 10 * 1000, // Timeout
     // withCredentials: true, // Check cross-site Access-Control
 };
 const _axios = axios.create(config);
 
 // 添加请求拦截器
 _axios.interceptors.request.use(
-    config => {
+    (config) => {
         // 在发送请求之前做些什么
         if (config.loading !== false) {
             showFullScreenLoading();
         }
         return config;
     },
-    err => {
+    (err) => {
         // 对请求错误做些什么
         return Promise.reject(err);
     }
@@ -61,7 +61,7 @@ _axios.interceptors.request.use(
 
 // 添加响应拦截器
 _axios.interceptors.response.use(
-    res => {
+    (res) => {
         // 对响应数据做点什么
         tryHideFullScreenLoading();
         if (res.data.code && res.data.code != 200) {
@@ -74,17 +74,15 @@ _axios.interceptors.response.use(
         }
         return res.data;
     },
-    err => {
+    (err) => {
         // 对响应错误做点什么
         tryHideFullScreenLoading();
         if (err.message.includes("timeout") || err.response.status == 502) {
             router.push({
                 path: "/500",
                 query: {
-                    redirect: router.currentRoute.query.redirect
-                        ? router.currentRoute.query.redirect
-                        : router.currentRoute.fullPath
-                }
+                    redirect: router.currentRoute.query.redirect ? router.currentRoute.query.redirect : router.currentRoute.fullPath,
+                },
             });
         }
         if (err.response.data.code && err.response.data.code != 200) {
@@ -97,17 +95,18 @@ _axios.interceptors.response.use(
 Plugin.install = function(Vue, options) {
     Vue.axios = _axios;
     window.axios = _axios;
+    //定义全局属性
     Object.defineProperties(Vue.prototype, {
         axios: {
             get() {
                 return _axios;
-            }
+            },
         },
         $axios: {
             get() {
                 return _axios;
-            }
-        }
+            },
+        },
     });
 };
 
