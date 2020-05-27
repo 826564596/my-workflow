@@ -75,7 +75,7 @@ const conditionList = [
         zdy2: "",
         opt1: "", //optType：1~5只需要opt1，如果optType=6，则需要opt1和opt2
         opt2: "",
-        columnType: "Double", //分为Double和String
+        columnType: 0, //分为Double为0 和String 为 1
         showType: "", //展示类型
         showName: "金额", //显示名称
         fixedDownBoxValue: [], //单选框数据

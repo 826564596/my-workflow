@@ -77,18 +77,18 @@ service.interceptors.response.use(
     },
     (error) => {
         // 对响应错误做点什么
-        tryHideFullScreenLoading();
-        if (error.message.includes("timeout") || error.response.status == 502) {
-            router.push({
-                path: "/500",
-                query: {
-                    redirect: router.currentRoute.query.redirect ? router.currentRoute.query.redirect : router.currentRoute.fullPath,
-                },
-            });
-        }
-        if (error.response.data.code && error.response.data.code != 200) {
-            Message.error(error.response.data.msg);
-        }
+        // tryHideFullScreenLoading();
+        // if (error.message.includes("timeout") || error.response.status == 502) {
+        //     router.push({
+        //         path: "/500",
+        //         query: {
+        //             redirect: router.currentRoute.query.redirect ? router.currentRoute.query.redirect : router.currentRoute.fullPath,
+        //         },
+        //     });
+        // }
+        // if (error.response.data.code && error.response.data.code != 200) {
+        //     Message.error(error.response.data.msg);
+        // }
         return Promise.reject(error);
     }
 );

@@ -12,37 +12,58 @@
         "directorMaxLevel": 4,
         "flowPermission": [],
         "formData": [{
-                "type": "input",
-                "label": "标题"
-            },
-            {
-                "type": "input",
-                "label": "标题2"
-            },
-            {
-                "type": "input",
-                "label": "标题3"
-            }
-        ],
+            "type": "input",
+            "label": "标题",
+            "power": 1
+        }, {
+            "type": "input",
+            "label": "标题2",
+            "power": 1
+        }, {
+            "type": "input",
+            "label": "标题3",
+            "power": 1
+        }],
         "nodeConfig": {
-            "pkId": "sid-start-node",
             "nodeName": "发起人",
-            "nodeFormData": [],
+            "nodeFormData": [{
+                "type": "input",
+                "label": "标题",
+                "power": 0
+            }, {
+                "type": "input",
+                "label": "标题2",
+                "power": 0
+            }, {
+                "type": "input",
+                "label": "标题3",
+                "power": 0
+            }],
             "type": 0,
             "childNode": {
                 "nodeName": "审核人",
                 "error": false,
-                "nodeFormData": [],
+                "nodeFormData": [{
+                    "type": "input",
+                    "label": "标题",
+                    "power": 1
+                }, {
+                    "type": "input",
+                    "label": "标题2",
+                    "power": 1
+                }, {
+                    "type": "input",
+                    "label": "标题3",
+                    "power": 1
+                }],
                 "type": 1,
-                "settype": 2,
-                "selectMode": 0,
+                "settype": 1,
+                "selectMode": false,
                 "selectRange": 3,
                 "directorLevel": 1,
-                "replaceByUp": 0,
-                "examineMode": 1,
+                "examineMode": false,
                 "noHanderAction": 2,
                 "examineEndDirectorLevel": 1,
-
                 "childNode": {
                     "nodeName": "路由",
                     "type": 4,
@@ -59,36 +80,41 @@
                         "type": 3,
                         "priorityLevel": 1,
                         "conditionList": [{
-                            "columnId": 0,
-                            "type": 1,
-                            "optType": "",
-                            "zdy1": "",
-                            "zdy2": "",
-                            "opt1": "",
-                            "opt2": "",
-                            "columnDbname": "",
-                            "columnType": "",
                             "showType": "",
-                            "showName": "",
-                            "fixedDownBoxValue": ""
+                            "columnId": 1,
+                            "type": 2,
+                            "showName": "金额",
+                            "optType": "1",
+                            "zdy1": "2",
+                            "opt1": "<",
+                            "zdy2": "",
+                            "opt2": "<",
+                            "columnType": "Double"
                         }],
-                        "nodeUserList": [{
-                            "targetId": 85,
-                            "type": 1,
-                            "name": "胡晓辉"
-                        }],
+                        "nodeUserList": [],
                         "childNode": {
                             "nodeName": "审核人",
                             "type": 1,
                             "priorityLevel": 1,
-                            "nodeFormData": [],
+                            "nodeFormData": [{
+                                "type": "input",
+                                "label": "标题",
+                                "power": 1
+                            }, {
+                                "type": "input",
+                                "label": "标题2",
+                                "power": 1
+                            }, {
+                                "type": "input",
+                                "label": "标题3",
+                                "power": 1
+                            }],
                             "settype": 1,
-                            "selectMode": 0,
+                            "selectMode": false,
                             "selectRange": 0,
                             "examineRoleId": 0,
                             "directorLevel": 1,
-                            "replaceByUp": 0,
-                            "examineMode": 1,
+                            "examineMode": false,
                             "noHanderAction": 2,
                             "examineEndType": 0,
                             "examineEndRoleId": 0,
@@ -96,9 +122,9 @@
                             "ccSelfSelectFlag": 1,
                             "conditionList": [],
                             "nodeUserList": [{
-                                "targetId": 435119986,
+                                "targetId": 111111111,
                                 "type": 1,
-                                "name": "赵旷课"
+                                "name": "aaa"
                             }],
                             "childNode": null,
                             "conditionNodes": [],
@@ -110,15 +136,59 @@
                         "nodeName": "条件2",
                         "type": 3,
                         "priorityLevel": 2,
-                        "conditionList": [],
+                        "conditionList": [{
+                            "showType": "",
+                            "columnId": 1,
+                            "type": 2,
+                            "showName": "金额",
+                            "optType": "2",
+                            "zdy1": "2",
+                            "opt1": "<",
+                            "zdy2": 2,
+                            "opt2": "<",
+                            "columnType": "Double"
+                        }],
                         "nodeUserList": [],
-                        "childNode": null,
+                        "childNode": {
+                            "nodeName": "审核人",
+                            "error": false,
+                            "type": 1,
+                            "nodeFormData": [{
+                                "type": "input",
+                                "label": "标题",
+                                "power": 1
+                            }, {
+                                "type": "input",
+                                "label": "标题2",
+                                "power": 1
+                            }, {
+                                "type": "input",
+                                "label": "标题3",
+                                "power": 1
+                            }],
+                            "settype": 1,
+                            "selectMode": false,
+                            "selectRange": 0,
+                            "directorLevel": 1,
+                            "examineMode": false,
+                            "noHanderAction": 2,
+                            "examineEndDirectorLevel": 0,
+                            "childNode": null,
+                            "conditionNodes": [],
+                            "nodeUserList": [{
+                                "type": 1,
+                                "targetId": "826564596",
+                                "name": "胡晓辉"
+                            }]
+                        },
                         "conditionNodes": [],
                         "error": false
                     }]
                 },
                 "nodeUserList": [{
-                    "name": 1
+                    "type": 1,
+                    "targetId": "aaaaaa",
+                    "name": "aaaaaa"
                 }]
             },
             "conditionNodes": []

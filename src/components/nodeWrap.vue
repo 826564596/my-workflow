@@ -179,7 +179,7 @@
                         </el-col>
                     </el-row>
                     <el-scrollbar wrap-class="demo-el-scroller-wrap" view-class="demo-el-scroller-view">
-                        <el-row v-for="(item, index) in nodeConfig.nodeFormData" :key="index">
+                        <el-row v-for="(item, index) in nodeConfig.formComponentPowers" :key="index">
                             <el-col :span="9">
                                 <div class="grid-content">
                                     <div>{{ item.label }}</div>
@@ -246,8 +246,8 @@
                             </div>
                             <div class="approver_self_select" v-show="approverConfig.settype == 4">
                                 <el-radio-group v-model="approverConfig.selectMode" style="width: 100%;">
-                                    <el-radio :label="1">选一个人</el-radio>
-                                    <el-radio :label="2">选多个人</el-radio>
+                                    <el-radio :label="false">选一个人</el-radio>
+                                    <el-radio :label="true">选多个人</el-radio>
                                 </el-radio-group>
                                 <h3>选择范围</h3>
                                 <el-radio-group v-model="approverConfig.selectRange" style="width: 100%;" @change="changeRange">
@@ -277,13 +277,13 @@
                             <div class="approver_some" v-if="
                                         (approverConfig.settype == 1 && approverConfig.nodeUserList.length > 1) ||
                                             approverConfig.settype == 2 ||
-                                            (approverConfig.settype == 4 && approverConfig.selectMode == 2)
+                                            (approverConfig.settype == 4 && approverConfig.selectMode == true)
                                     ">
                                 <p>多人审批时采用的审批方式</p>
                                 <el-radio-group v-model="approverConfig.examineMode" class="clear">
-                                    <el-radio :label="1">依次审批</el-radio>
+                                    <el-radio :label="false">依次审批</el-radio>
                                     <br />
-                                    <el-radio :label="2" v-if="approverConfig.settype != 2">会签(须所有审批人同意)</el-radio>
+                                    <el-radio :label="true" v-if="approverConfig.settype != 2">会签(须所有审批人同意)</el-radio>
                                 </el-radio-group>
                             </div>
                             <div class="approver_some" v-if="approverConfig.settype == 2 || approverConfig.settype == 7">
@@ -414,7 +414,7 @@
                     </el-row>
                     <el-scrollbar wrap-class="demo-el-scroller-wrap" view-class="demo-el-scroller-view">
 
-                        <el-row v-for="(item, index) in nodeConfig.nodeFormData" :key="index">
+                        <el-row v-for="(item, index) in nodeConfig.formComponentPowers" :key="index">
                             <el-col :span="9">
                                 <div class="grid-content">
                                     <div>{{ item.label }}</div>
@@ -550,7 +550,7 @@
                                 </p>
                             </div>
                             <!-- 单选框 -->
-                            <div v-else-if="item.columnType == 'String' && item.showType == 3">
+                            <div v-else-if="item.columnType == 1 && item.showType == 3">
                                 <p class="check_box">
                                     <a :class="toggleStrClass(item, item1.key) && 'active'" @click="toStrChecked(item, item1.key)" v-for="(item1, index1) in item.fixedDownBoxValue" :key="index1">{{ item1.value }}</a>
 
@@ -767,22 +767,22 @@ export default {
         //表单权限总的按钮切换
         radioGroupChange(e) {
             if (this.nodeConfig.type == 0) {
-                this.nodeConfig.nodeFormData.forEach((item, index) => {
+                this.nodeConfig.formComponentPowers.forEach((item, index) => {
                     item.power = e;
                 })
             }
             if (this.nodeConfig.type == 1) {
-                this.approverConfig.nodeFormData.forEach((item, index) => {
+                this.approverConfig.formComponentPowers.forEach((item, index) => {
                     item.power = e;
                 })
-                this.nodeConfig.nodeFormData = this.approverConfig.nodeFormData;
+                this.nodeConfig.formComponentPowers = this.approverConfig.formComponentPowers;
             }
         },
         //按钮切换
         radioChange(e) {
             //审批人节点更新时需要额外赋值
             if (this.nodeConfig.type == 1) {
-                this.approverConfig.nodeFormData = this.nodeConfig.nodeFormData;
+                this.approverConfig.formComponentPowers = this.nodeConfig.formComponentPowers;
             }
             this.$forceUpdate(); //因为数据层次太多，render函数没有自动更新，手动强制刷新
         },
@@ -849,7 +849,7 @@ export default {
                         }
                     }
                     //
-                    if (columnType == "String" && showType == "3") {
+                    if (columnType == 1 && showType == "3") {
                         if (zdy1) {
                             str +=
                                 showName +
@@ -859,7 +859,7 @@ export default {
                         }
                     }
                     //如果涉及运算符
-                    if (columnType == "Double") {
+                    if (columnType == 0) {
                         if (optType != 6 && zdy1) {
                             let optTypeStr = ["", "<", ">", "≤", "=", "≥"][optType];
                             str += `${showName} ${optTypeStr} ${zdy1} 并且 `;
@@ -905,15 +905,15 @@ export default {
                     });
 
                 }
-                //如果选部门 
+                //如果选角色
                 else if (type == 2) {
                     this.conditionRoleList.push({
                         roleName: name,
                         roleId: targetId
                     });
                 }
-                // 如果选角色
-                else if (type == 3) {
+                // 如果选部门
+                else if (type == 0) {
                     this.conditionDepartmentList.push({
                         departmentName: name,
                         id: targetId
@@ -925,7 +925,7 @@ export default {
         sureConditionRole() {
             console.log("sureConditionRole");
             this.conditionConfig.nodeUserList = [];
-            //选角色，type=2
+            //选角色，type= 2
             this.conditionRoleList.map(item => {
                 this.conditionConfig.nodeUserList.push({
                     type: 2,
@@ -933,15 +933,15 @@ export default {
                     name: item.roleName
                 });
             });
-            //选部门，type=3
+            //选部门，type = 0
             this.conditionDepartmentList.map(item => {
                 this.conditionConfig.nodeUserList.push({
-                    type: 3,
+                    type: 0,
                     targetId: item.id,
                     name: item.departmentName
                 });
             });
-            //选人，type=1
+            //选人，type = 1
             this.conditionEmployessList.map(item => {
                 this.conditionConfig.nodeUserList.push({
                     type: 1,
@@ -1048,7 +1048,7 @@ export default {
                         showName: "发起人"
                     });
                 } else {
-                    if (columnType == "Double") {
+                    if (columnType == 0) {
                         this.conditionConfig.conditionList.push({
                             showType: showType,
                             columnId: columnId,
@@ -1062,7 +1062,7 @@ export default {
                             columnDbname: columnName,
                             columnType: columnType
                         });
-                    } else if (columnType == "String" && showType == "3") {
+                    } else if (columnType == 1 && showType == "3") {
                         this.conditionConfig.conditionList.push({
                             showType: showType,
                             columnId: columnId,
@@ -1217,12 +1217,12 @@ export default {
         changeType(val) {
             console.log("changeType");
             this.approverConfig.nodeUserList = [];
-            this.approverConfig.examineMode = 1;
+            this.approverConfig.examineMode = false;
             this.approverConfig.noHanderAction = 2;
             if (val == 2) {
                 this.approverConfig.directorLevel = 1;
             } else if (val == 4) {
-                this.approverConfig.selectMode = 1;
+                this.approverConfig.selectMode = false;
                 this.approverConfig.selectRange = 1;
             } else if (val == 7) {
                 this.approverConfig.examineEndDirectorLevel = 1;
@@ -1303,11 +1303,11 @@ export default {
                     // 多人审批
                 } else if (nodeConfig.nodeUserList.length > 1) {
                     //依次审批
-                    if (nodeConfig.examineMode == 1) {
+                    if (nodeConfig.examineMode == false) {
                         return this.arrToStr(nodeConfig.nodeUserList);
                     }
                     //会签 
-                    else if (nodeConfig.examineMode == 2) {
+                    else if (nodeConfig.examineMode == true) {
                         return nodeConfig.nodeUserList.length + "人会签";
                     }
                 }
@@ -1315,9 +1315,9 @@ export default {
             //settype=2：主管 
             else if (nodeConfig.settype == 2) {
                 let level = nodeConfig.directorLevel == 1 ? "直接主管" : "第" + nodeConfig.directorLevel + "级主管";
-                if (nodeConfig.examineMode == 1) {
+                if (nodeConfig.examineMode == false) {
                     return level;
-                } else if (nodeConfig.examineMode == 2) {
+                } else if (nodeConfig.examineMode == true) {
                     return level + "会签";
                 }
             }
@@ -1392,12 +1392,14 @@ export default {
             console.log("surePromoter");
             this.flowPermission1 = [];
             this.checkedDepartmentList.map(item => {
+                //部门
                 this.flowPermission1.push({
-                    type: 3,
+                    type: 0,
                     targetId: item.id,
                     name: item.departmentName
                 });
             });
+            //人员
             this.checkedEmployessList.map(item => {
                 this.flowPermission1.push({
                     type: 1,
@@ -1574,13 +1576,13 @@ export default {
                 this.promoterDrawer = true;
                 this.flowPermission1 = this.flowPermission;
                 //给发起人赋表单权限初值
-                if (this.nodeConfig.nodeFormData.length == 0) {
+                if (this.nodeConfig.formComponentPowers.length == 0) {
                     this.radio = 0;
                     console.log(this.formData)
                     this.formData.forEach((item, index) => {
                         item.power = 0;
                     })
-                    this.nodeConfig.nodeFormData = JSON.parse(JSON.stringify(this.formData));
+                    this.nodeConfig.formComponentPowers = JSON.parse(JSON.stringify(this.formData));
                 }
             }
             //如果为审批节点 
@@ -1588,9 +1590,9 @@ export default {
                 this.approverDrawer = true;
                 this.approverConfig = JSON.parse(JSON.stringify(this.nodeConfig));
                 this.approverConfig.settype = this.approverConfig.settype ? this.approverConfig.settype : 1;
-                console.log(this.approverConfig.nodeFormData.length);
+                console.log(this.approverConfig.formComponentPowers.length);
                 //给审批人赋表单权限初值
-                if (this.nodeConfig.nodeFormData.length == 0) {
+                if (this.nodeConfig.formComponentPowers.length == 0) {
                     console.log(this.formData);
                     console.log(this.nodeConfig);
 
@@ -1598,8 +1600,8 @@ export default {
                     this.formData.forEach((item, index) => {
                         item.power = 1;
                     })
-                    this.nodeConfig.nodeFormData = JSON.parse(JSON.stringify(this.formData));
-                    this.approverConfig.nodeFormData = JSON.parse(JSON.stringify(this.formData));
+                    this.nodeConfig.formComponentPowers = JSON.parse(JSON.stringify(this.formData));
+                    this.approverConfig.formComponentPowers = JSON.parse(JSON.stringify(this.formData));
 
                 }
             }

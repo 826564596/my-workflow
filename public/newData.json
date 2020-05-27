@@ -2,67 +2,67 @@
     "code": "200",
     "msg": "success",
     "data": {
+        "flowId": 0,
+        "taskId": 0,
+        "description": "",
         "tableId": 1,
-        "workFlowVersionId": "",
-        "workFlowDef": {
-            "name": "合同审批",
-            "sortNo": 5,
-            "status": 1
-        },
         "directorMaxLevel": 4,
-        "flowPermission": [],
-        "formData": [{
-            "type": "input",
-            "label": "标题",
-            "power": 1
-        }, {
-            "type": "input",
-            "label": "标题2",
-            "power": 1
-        }, {
-            "type": "input",
-            "label": "标题3",
-            "power": 1
-        }],
-        "nodeConfig": {
+        "flowPermissions": [],
+        "forms": {
+            "formName": "合同审批",
+            "flowId": 6,
+            "taskId": 5,
+            "formsId": 3,
+            "isDeleted": true,
+            "description": "world",
+            "enabled": true,
+            "createBy": "james",
+            "components": [{
+                "label": "金额",
+                "tag": "el-input",
+                "tagIcon": "input",
+                "placeholder": "请输入单行文本",
+                "defaultValue": null,
+                "span": 24,
+                "showLabel": true,
+                "labelWidth": null,
+                "style": "{'width ':'100 % '}",
+                "clearable": true,
+                "prepend": "",
+                "append": "",
+                "prefix-icon": "",
+                "suffix-icon": "",
+                "maxlength": 100,
+                "show-word-limit": false,
+                "readonly": false,
+                "disabled": false,
+                "required": true,
+                "value": 2,
+                "regList": [
+
+                ],
+                "document": "https://element.eleme.cn/#/zh-CN/component/input",
+                "formId": 101,
+                "renderKey": 1588234105067,
+                "layout": "colFormItem",
+                "vModel": "field101",
+                "type": "input"
+            }]
+        },
+        "nodes": {
             "nodeName": "发起人",
-            "nodeFormData": [{
-                "type": "input",
-                "label": "标题",
-                "power": 0
-            }, {
-                "type": "input",
-                "label": "标题2",
-                "power": 0
-            }, {
-                "type": "input",
-                "label": "标题3",
-                "power": 0
-            }],
+            "formComponentPowers": [],
             "type": 0,
             "childNode": {
                 "nodeName": "审核人",
                 "error": false,
-                "nodeFormData": [{
-                    "type": "input",
-                    "label": "标题",
-                    "power": 1
-                }, {
-                    "type": "input",
-                    "label": "标题2",
-                    "power": 1
-                }, {
-                    "type": "input",
-                    "label": "标题3",
-                    "power": 1
-                }],
+                "formComponentPowers": [],
                 "type": 1,
                 "settype": 1,
-                "selectMode": 0,
+                "selectMode": false,
                 "selectRange": 3,
                 "directorLevel": 1,
-                "replaceByUp": 0,
-                "examineMode": 1,
+                "examineMode": false,
                 "noHanderAction": 2,
                 "examineEndDirectorLevel": 1,
                 "childNode": {
@@ -90,33 +90,20 @@
                             "opt1": "<",
                             "zdy2": "",
                             "opt2": "<",
-                            "columnType": "Double"
+                            "columnType": 0
                         }],
                         "nodeUserList": [],
                         "childNode": {
                             "nodeName": "审核人",
                             "type": 1,
                             "priorityLevel": 1,
-                            "nodeFormData": [{
-                                "type": "input",
-                                "label": "标题",
-                                "power": 1
-                            }, {
-                                "type": "input",
-                                "label": "标题2",
-                                "power": 1
-                            }, {
-                                "type": "input",
-                                "label": "标题3",
-                                "power": 1
-                            }],
+                            "formComponentPowers": [],
                             "settype": 1,
-                            "selectMode": 0,
+                            "selectMode": false,
                             "selectRange": 0,
                             "examineRoleId": 0,
                             "directorLevel": 1,
-                            "replaceByUp": 0,
-                            "examineMode": 1,
+                            "examineMode": false,
                             "noHanderAction": 2,
                             "examineEndType": 0,
                             "examineEndRoleId": 0,
@@ -124,9 +111,9 @@
                             "ccSelfSelectFlag": 1,
                             "conditionList": [],
                             "nodeUserList": [{
-                                "targetId": 435119986,
+                                "targetId": 111111111,
                                 "type": 1,
-                                "name": "赵旷课"
+                                "name": "aaa"
                             }],
                             "childNode": null,
                             "conditionNodes": [],
@@ -148,14 +135,14 @@
                             "opt1": "<",
                             "zdy2": 2,
                             "opt2": "<",
-                            "columnType": "Double"
+                            "columnType": 0
                         }],
                         "nodeUserList": [],
                         "childNode": {
                             "nodeName": "审核人",
                             "error": false,
                             "type": 1,
-                            "nodeFormData": [{
+                            "formComponentPowers": [{
                                 "type": "input",
                                 "label": "标题",
                                 "power": 1
@@ -169,11 +156,10 @@
                                 "power": 1
                             }],
                             "settype": 1,
-                            "selectMode": 0,
+                            "selectMode": false,
                             "selectRange": 0,
                             "directorLevel": 1,
-                            "replaceByUp": 0,
-                            "examineMode": 1,
+                            "examineMode": false,
                             "noHanderAction": 2,
                             "examineEndDirectorLevel": 0,
                             "childNode": null,
@@ -188,10 +174,11 @@
                         "error": false
                     }]
                 },
+                "conditionNodes": [],
                 "nodeUserList": [{
                     "type": 1,
-                    "targetId": "435119986",
-                    "name": "赵xx"
+                    "targetId": "aaaaaa",
+                    "name": "aaaaaa"
                 }]
             },
             "conditionNodes": []

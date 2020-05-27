@@ -11,10 +11,10 @@ import ydc from "./plugins/common.js";
 import nodeWrap from "@/components/nodeWrap";
 
 Vue.use(nodeWrap);
-Vue.component("nodeWrap", nodeWrap); //初始化组件
+Vue.component("nodeWrap", nodeWrap); //初始化节点组件
 import addNode from "@/components/addNode";
 Vue.use(addNode);
-Vue.component("addNode", addNode); //初始化组件
+Vue.component("addNode", addNode); //初始化添加节点组件
 Vue.prototype.$func = func;
 Vue.prototype.$ydc = ydc;
 Vue.config.productionTip = false;

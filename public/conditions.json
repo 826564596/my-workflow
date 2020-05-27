@@ -10,7 +10,7 @@
         "opt1": "",
         "opt2": "",
         "columnDbname": "",
-        "columnType": "Double",
+        "columnType": 0,
         "showType": "",
         "showName": "金额",
         "fixedDownBoxValue": ""
@@ -23,7 +23,7 @@
         "opt1": "",
         "opt2": "",
         "columnDbname": "",
-        "columnType": "String",
+        "columnType": 1,
         "showType": 3,
         "showName": "单选框",
         "fixedDownBoxValue": [{
