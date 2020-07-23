@@ -1,5 +1,7 @@
 <template>
     <div id="app">
+
+        <div class="tesdss">12345</div>
         <router-view />
     </div>
 </template>
@@ -13,6 +15,16 @@ export default {
 
 <style>
 @import "./css/workflow.css";
+
+.tesdss {
+    font-family: "方正粗倩简体";
+    font-size: 30px;
+    font-weight: bold;
+
+    position: absolute;
+    top: 10%;
+    z-index: 1111111;
+}
 .error-modal-list {
     width: 455px;
 }
